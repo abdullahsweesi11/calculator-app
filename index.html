@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Calculator</h1>
+    <div class="exterior container">
+        <div id="display">0</div>
+        <div class="interior container">
+
+        </div>
+    </div>
+    <button onclick="viewOps()" style="width: max-content; height: 70px;">Press to see operands and operation</button>
+    <script>
+        const interior = document.querySelector(".interior.container");
+        const display = document.querySelector("#display");
+
+        let operand1 = null;
+        let operation = null;
+        let operand2 = null;
+
+        let newEntry = true;
+
+        const symbols = ['AC', '+/-', '%', '/', '7', '8', '9', '*', '4', '5', '6', '-', '1', '2', '3', '+', '0', '.', '=']
+
+        for (let i = 0; i < 19; i++) {
+            const button = document.createElement("div");
+            button.classList.add("button")
+            button.textContent = symbols[i]
+
+            button.addEventListener('click', (event) => {
+                updateDisplay(event.target)
+            })
+
+            if (i % 4 === 3) {
+                button.addEventListener('click', () => {
+                    operand1 = display.textContent
+                    operation = button.textContent;
+                    newEntry = true;
+                })
+            }
+
+            if (i === 16) {
+                button.classList.add("zero-button")
+            }
+
+            interior.appendChild(button)
+        }
+
+        function updateDisplay(button) {
+            const input = button.textContent;
+            const curr_display = display.textContent;
+            
+            if ((!isNaN(input)) && curr_display.length < 9) {
+                if (curr_display === "0" || newEntry) {
+                    display.textContent = input;
+                    newEntry = false;
+                } else {
+                    display.textContent += input;
+                } 
+            }
+
+            switch (input) {
+                case 'AC':
+                    operand1 = null;
+                    operand2 = null;
+                    operation = null;
+                    display.textContent = "0";
+                    break;
+                case '%':
+                    display.textContent = Number(curr_display) / 100
+                    break;
+                case '+/-':
+                    display.textContent = -Number(curr_display);
+                    break;
+                case '.':
+                    if (!curr_display.includes(".")) {
+                        display.textContent += ".";
+                    }
+                    break;
+                case '=':
+                    if (operand1 && operation) {
+                        operand2 = curr_display;
+                    }
+                    operate(operand1, operation, operand2);
+
+                    operand2 = null;
+                    
+                    newEntry = true;
+                    break;
+            }
+        }
+
+        function operate(op1, op, op2) {
+            if (op1 && op2) {
+                op1 = Number(op1);
+                op2 = Number(op2);
+                let result = 0;
+
+                switch (op) {
+                    case "/":
+                        if (op2 === 0) {
+                            result = "nope :)"
+                        } else {
+                            result = op1 / op2;
+                        }
+                        
+                        break;
+                    case "*":
+                        result = op1 * op2;
+                        break;
+                    case "-":
+                        result = op1 - op2;
+                        break;
+                    case "+":
+                        result = op1 + op2;
+                        break;
+                }
+
+                display.textContent = result.toString().substring(0, 9);
+            }
+        }
+
+        const viewOps = () => {
+            console.log("Operand 1: " + operand1);
+            console.log("Operation: " + operation);
+            console.log("Operand 2: " + operand2);
+        }
+    </script>
+</body>
+</html>

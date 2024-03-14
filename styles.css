@@ -14,7 +14,7 @@ h1 {
 
 .exterior {
     height: 700px;
-    width: 40%;
+    width: 550px;
     background: navy;
     margin: 0 auto;
     flex-direction: column;
@@ -28,7 +28,7 @@ h1 {
     height: 20%;
     display: flex;
     background-color: azure;
-    font-size: 6.1rem;
+    font-size: 6.55rem;
     text-align: right;
     justify-content: right;
     align-items: center;
@@ -54,7 +54,7 @@ h1 {
     border-radius: 10%
 }
 
-.button:hover {
+.button:hover:not(.clear-backspace-container) {
     cursor: pointer;
     background-color: cornflowerblue;
     color: white;
@@ -63,4 +63,15 @@ h1 {
 .zero-button {
     width: 50%;
     border-right-width: 2px;
+}
+
+.clear-backspace-container {
+    background: navy;
+    display: flex;
+    flex-direction: column;
+}
+.clear-backspace-container * {
+    height: 100%;
+    width: 100%;
+
 }
